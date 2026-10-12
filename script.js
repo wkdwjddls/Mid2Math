@@ -114,53 +114,53 @@
   }
 
   function chip(x, y, text, accent) {
-    var w = Math.max(38, String(text).length * 15 + 18);
-    var h = 30;
+    var w = Math.max(44, String(text).length * 17 + 20);
+    var h = 36;
     var fillStyle = accent ? 'fill:var(--accent)' : 'fill:var(--surface);stroke:var(--grid);stroke-width:1.5';
     var textColor = accent ? '#fff' : 'var(--ink)';
     return '<rect x="' + (x - w / 2) + '" y="' + (y - h / 2) + '" width="' + w + '" height="' + h + '" rx="8" style="' + fillStyle + '"/>' +
-      '<text x="' + x + '" y="' + y + '" text-anchor="middle" dominant-baseline="middle" style="font:800 20px \'JetBrains Mono\',monospace;fill:' + textColor + '">' + text + '</text>';
+      '<text x="' + x + '" y="' + y + '" text-anchor="middle" dominant-baseline="middle" style="font:800 24px \'JetBrains Mono\',monospace;fill:' + textColor + '">' + text + '</text>';
   }
 
   function svgSquare(a, mode) {
-    var side = scalePx(a, 6, 44, 140);
+    var side = scalePx(a, 6, 44, 110);
     var margin = 26;
     var vbW = side + margin * 2;
-    var vbH = margin + side + 58;
+    var vbH = margin + side + 62;
     var x0 = margin, y0 = margin, x1 = margin + side, y1 = margin + side;
     return svgWrap('0 0 ' + vbW + ' ' + vbH,
       backdrop(vbW, vbH) +
       shadowGroup('<rect x="' + x0 + '" y="' + y0 + '" width="' + side + '" height="' + side + '" ' + strokeFor(mode) + '/>') +
       vertexDot(x0, y0) + vertexDot(x1, y0) + vertexDot(x1, y1) + vertexDot(x0, y1) +
-      chip(vbW / 2, margin + side + 34, a, false)
+      chip(vbW / 2, margin + side + 38, a, false)
     );
   }
 
   function svgRect(w, h, mode) {
-    var wPx = scalePx(w, 6, 44, 150);
-    var hPx = scalePx(h, 6, 40, 130);
+    var wPx = scalePx(w, 6, 44, 120);
+    var hPx = scalePx(h, 6, 40, 100);
     var margin = 26;
-    var vbW = margin + wPx + 70;
-    var vbH = margin + hPx + 58;
+    var vbW = margin + wPx + 76;
+    var vbH = margin + hPx + 62;
     var x0 = margin, y0 = margin, x1 = margin + wPx, y1 = margin + hPx;
     return svgWrap('0 0 ' + vbW + ' ' + vbH,
       backdrop(vbW, vbH) +
       shadowGroup('<rect x="' + x0 + '" y="' + y0 + '" width="' + wPx + '" height="' + hPx + '" ' + strokeFor(mode) + '/>') +
       vertexDot(x0, y0) + vertexDot(x1, y0) + vertexDot(x1, y1) + vertexDot(x0, y1) +
-      chip(margin + wPx / 2, margin + hPx + 34, w, false) +
-      chip(margin + wPx + 38, margin + hPx / 2, h, false)
+      chip(margin + wPx / 2, margin + hPx + 38, w, false) +
+      chip(margin + wPx + 42, margin + hPx / 2, h, false)
     );
   }
 
   function svgTriangleArea(b, h) {
-    var bPx = scalePx(b, 6, 56, 150);
-    var hPx = scalePx(h, 6, 40, 130);
+    var bPx = scalePx(b, 6, 56, 120);
+    var hPx = scalePx(h, 6, 40, 100);
     var margin = 26;
     var baseY = margin + hPx;
     var apexX = margin + bPx / 2;
     var markSize = margin * 0.55;
-    var vbW = margin * 2 + bPx;
-    var vbH = baseY + 58;
+    var vbW = Math.max(margin * 2 + bPx, apexX + 76);
+    var vbH = baseY + 62;
     return svgWrap('0 0 ' + vbW + ' ' + vbH,
       backdrop(vbW, vbH) +
       shadowGroup(
@@ -169,18 +169,18 @@
       '<line x1="' + apexX + '" y1="' + margin + '" x2="' + apexX + '" y2="' + baseY + '" ' + DASH + '/>' +
       '<path d="M ' + (apexX - markSize) + ',' + baseY + ' L ' + (apexX - markSize) + ',' + (baseY - markSize) + ' L ' + apexX + ',' + (baseY - markSize) + '" style="fill:none;stroke:var(--muted);stroke-width:2.5"/>' +
       vertexDot(margin, baseY) + vertexDot(margin + bPx, baseY) + vertexDot(apexX, margin) +
-      chip(apexX, baseY + 34, b, false) +
-      chip(apexX + 38, margin + hPx / 2, h, false)
+      chip(apexX, baseY + 38, b, false) +
+      chip(apexX + 42, margin + hPx / 2, h, false)
     );
   }
 
   function svgCube(a) {
-    var edge = scalePx(a, 10, 40, 120);
+    var edge = scalePx(a, 10, 40, 95);
     var depth = edge * 0.42;
     var margin = 26;
     var frontX = margin, frontY = margin + depth;
     var vbW = frontX + edge + depth + 26;
-    var vbH = frontY + edge + 58;
+    var vbH = frontY + edge + 62;
     return svgWrap('0 0 ' + vbW + ' ' + vbH,
       backdrop(vbW, vbH) +
       shadowGroup(
@@ -188,7 +188,7 @@
         '<polygon points="' + frontX + ',' + frontY + ' ' + (frontX + depth) + ',' + (frontY - depth) + ' ' + (frontX + depth + edge) + ',' + (frontY - depth) + ' ' + (frontX + edge) + ',' + frontY + '" ' + STROKE_2D + '/>' +
         '<polygon points="' + (frontX + edge) + ',' + frontY + ' ' + (frontX + edge + depth) + ',' + (frontY - depth) + ' ' + (frontX + edge + depth) + ',' + (frontY - depth + edge) + ' ' + (frontX + edge) + ',' + (frontY + edge) + '" ' + STROKE_2D + '/>'
       ) +
-      chip(frontX + edge / 2, frontY + edge + 34, a, false)
+      chip(frontX + edge / 2, frontY + edge + 38, a, false)
     );
   }
 
@@ -201,7 +201,7 @@
     var apexY = Math.max(14, t * Math.sin(A) * baseLen);
     var minX = Math.min(0, baseLen, apexX);
     var maxX = Math.max(0, baseLen, apexX);
-    var sideMargin = 30, topMargin = 44, bottomMargin = 52;
+    var sideMargin = 50, topMargin = 48, bottomMargin = 58;
     var offsetX = sideMargin - minX;
     var apexPx = { x: offsetX + apexX, y: topMargin };
     var basePxY = topMargin + apexY;
@@ -213,9 +213,9 @@
       backdrop(vbW, vbH) +
       shadowGroup('<polygon points="' + L.x + ',' + L.y + ' ' + R.x + ',' + R.y + ' ' + apexPx.x + ',' + apexPx.y + '" ' + STROKE + '/>') +
       vertexDot(L.x, L.y) + vertexDot(R.x, R.y) + vertexDot(apexPx.x, apexPx.y) +
-      chip(apexPx.x, Math.max(18, apexPx.y - 26), '?', true) +
-      chip(L.x, L.y + 34, angleA + '°', false) +
-      chip(R.x, R.y + 34, angleB + '°', false)
+      chip(apexPx.x, Math.max(20, apexPx.y - 28), '?', true) +
+      chip(L.x, L.y + 38, angleA + '°', false) +
+      chip(R.x, R.y + 38, angleB + '°', false)
     );
   }
 
@@ -346,7 +346,9 @@
       els.shapeFigure.hidden = false;
       els.figureCaption.hidden = !q.caption;
       els.equation.hidden = true;
+      els.shapeFigure.parentElement.classList.add('has-shape');
     } else {
+      els.shapeFigure.parentElement.classList.remove('has-shape');
       els.shapeFigure.hidden = true;
       els.figureCaption.hidden = true;
       els.equation.hidden = false;

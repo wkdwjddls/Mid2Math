@@ -198,21 +198,28 @@ h1{
   background:var(--surface);
   border-radius:22px;
   box-shadow:var(--shadow);
-  padding:clamp(12px, 2.4dvh, 24px) 20px;
+  padding:clamp(10px, 2dvh, 20px) 20px;
   text-align:center;
   position:relative;
   overflow:hidden;
   display:flex;
   flex-direction:column;
-  gap:clamp(4px, 1dvh, 10px);
+  gap:clamp(4px, .9dvh, 10px);
+}
+
+.card-top{
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
 }
 
 .timer-header{
   flex:none;
   display:flex;
   align-items:baseline;
-  justify-content:center;
-  gap:6px;
+  gap:5px;
 }
 
 .timer-icon{ font-size:1.05rem; }
@@ -220,9 +227,10 @@ h1{
 .timer-value{
   font-family:'JetBrains Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
-  font-size:1.75rem;
+  font-size:clamp(1.3rem, 3.6dvh, 1.75rem);
   font-weight:800;
   color:var(--ring);
+  line-height:1.1;
   display:inline-block;
 }
 
@@ -278,8 +286,8 @@ h1{
 .op-tag{
   flex:none;
   display:inline-block;
-  align-self:center;
   font-size:.8rem;
+  white-space:nowrap;
   font-weight:700;
   letter-spacing:.04em;
   text-transform:uppercase;
@@ -292,24 +300,28 @@ h1{
 
 .question-stage{
   flex:1 1 0%;
-  min-height:0;
-  width:auto;
-  max-width:100%;
-  aspect-ratio:4/3;
+  min-height:96px;
+  width:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:6px;
-  margin:0 auto;
-  overflow:visible;
+  margin:0;
+  overflow:hidden;
+}
+
+/* 도형 문제: 그림과 '= ?'를 가로로 배치해 세로 공간을 그림에 모두 사용 */
+.question-stage.has-shape{
+  flex-direction:row;
+  gap:10px;
 }
 
 .equation{
   font-family:'JetBrains Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
   font-weight:800;
-  font-size:clamp(1.8rem, 8.5vw, 2.6rem);
+  font-size:min(clamp(1.8rem, 8.5vw, 2.6rem), 6dvh);
   letter-spacing:-.01em;
   margin:0;
   max-width:100%;
@@ -319,15 +331,18 @@ h1{
 .equation .eq{ color:var(--muted); margin:0 .15em; }
 
 .shape-figure{
-  width:100%;
-  max-width:250px;
-  flex:1;
+  flex:0 1 auto;
+  align-self:stretch;
+  min-width:0;
   min-height:0;
   margin:0;
+  display:flex;
+  justify-content:center;
 }
 
 .shape-figure svg{
-  width:100%;
+  width:auto;
+  max-width:100%;
   height:100%;
   display:block;
   overflow:visible;
@@ -337,8 +352,10 @@ h1{
   font-family:'JetBrains Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
   font-weight:800;
-  font-size:clamp(1.6rem, 8vw, 2rem);
+  font-size:clamp(1.5rem, 7vw, 2rem);
   margin:0;
+  flex:none;
+  white-space:nowrap;
 }
 
 .figure-caption .eq{ color:var(--muted); margin-right:6px; }
@@ -354,14 +371,14 @@ input#answer{
   min-width:0;
   font-family:'JetBrains Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
-  font-size:1.6rem;
+  font-size:clamp(1.3rem, 3.4dvh, 1.6rem);
   font-weight:700;
   text-align:center;
   color:var(--ink);
   background:var(--bg);
   border:2px solid var(--grid);
   border-radius:14px;
-  padding:12px 10px;
+  padding:clamp(6px, 1.2dvh, 12px) 10px;
   outline:none;
   caret-color:transparent;
   cursor:default;
@@ -376,19 +393,20 @@ input#answer.incorrect{ border-color:var(--bad); background:var(--bad-bg); }
   flex:none;
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:clamp(5px, 1dvh, 8px);
+  gap:clamp(4px, .8dvh, 8px);
 }
 
 .keypad button{
   font-family:'JetBrains Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
-  font-size:1.5rem;
+  font-size:clamp(1.15rem, 3.2dvh, 1.5rem);
   font-weight:700;
   color:var(--ink);
   background:var(--bg);
   border:1px solid var(--grid);
   border-radius:14px;
-  padding:clamp(8px, 1.6dvh, 14px) 0;
+  height:clamp(38px, 6.4dvh, 58px);
+  padding:0;
   cursor:pointer;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
@@ -415,8 +433,10 @@ input#answer.incorrect{ border-color:var(--bad); background:var(--bad-bg); }
 
 .feedback{
   flex:none;
-  min-height:1.3rem;
-  font-size:.95rem;
+  min-height:1.2em;
+  line-height:1.2;
+  font-size:.9rem;
+  margin:0;
   font-weight:700;
 }
 
@@ -425,10 +445,15 @@ input#answer.incorrect{ border-color:var(--bad); background:var(--bad-bg); }
 
 .ops-legend{
   flex:none;
-  display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  display:flex;
   gap:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  margin-inline:-4px;
+  padding:0 4px;
 }
+
+.ops-legend::-webkit-scrollbar{ display:none; }
 
 .ops-legend button{
   font-family:inherit;
@@ -438,8 +463,9 @@ input#answer.incorrect{ border-color:var(--bad); background:var(--bad-bg); }
   background:var(--bg);
   border:1px solid var(--grid);
   border-radius:999px;
-  padding:6px 4px;
+  padding:6px 10px;
   white-space:nowrap;
+  flex:none;
   cursor:pointer;
 }
 
@@ -571,19 +597,10 @@ kbd{
 
   .card{ border-radius:18px; padding-inline:14px; }
 
-  .timer-value{ font-size:1.55rem; }
-  .equation{ font-size:clamp(1.7rem, 8.5vw, 2.3rem); }
-
-  input#answer{ font-size:1.45rem; padding:10px 8px; }
-
-  .shape-figure{ max-width:210px; }
-
   .keypad{ gap:6px; }
-  .keypad button{ font-size:1.4rem; }
   .keypad button.key-clear{ font-size:.95rem; }
 
-  .ops-legend{ gap:5px; }
-  .ops-legend button{ font-size:.75rem; padding:5px 2px; }
+  .ops-legend button{ font-size:.75rem; padding:5px 9px; }
   .game-over, .start-screen{ padding:18px; }
 }
 
@@ -592,21 +609,26 @@ kbd{
   .stat{ padding:7px 6px; }
   .stat .label{ font-size:.7rem; }
   .stat .value{ font-size:1.25rem; }
-  .equation{ font-size:clamp(1.5rem, 8vw, 2rem); }
-  .ops-legend button{ font-size:.7rem; }
+  .ops-legend button{ font-size:.72rem; }
+}
+
+/* 세로 공간이 부족한 화면: 부가 정보를 줄여 문제 영역 확보 */
+@media (max-height: 780px){
+  .tagline{ display:none; }
+  footer{ display:none; }
 }
 
 @media (max-height: 700px){
-  .tagline{ display:none; }
   .stat{ padding:6px 8px; }
-  .stat .value{ font-size:1.3rem; }
-  .timer-value{ font-size:1.4rem; }
-  .keypad button{ font-size:1.3rem; }
-  .ops-legend button{ padding:4px 2px; }
-  footer{ font-size:.7rem; }
+  .stat .label{ font-size:.7rem; }
+  .stat .value{ font-size:1.25rem; }
+  .ops-legend button{ padding:4px 9px; }
 }
 
-@media (max-height: 580px){
-  footer{ display:none; }
+@media (max-height: 600px){
+  h1{ font-size:1.1rem; }
+  .restart-top{ padding:4px 10px; }
+  .stat{ display:flex; align-items:baseline; justify-content:space-between; gap:4px; padding:5px 8px; }
+  .stat .value{ font-size:1.1rem; margin-top:0; }
   .timer-unit{ display:none; }
 }
