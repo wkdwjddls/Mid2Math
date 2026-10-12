@@ -351,6 +351,7 @@
       els.figureCaption.hidden = true;
       els.equation.hidden = false;
       els.equation.innerHTML = q.html;
+      fitEquation();
     }
 
     els.answer.value = '';
@@ -358,6 +359,24 @@
     els.feedback.textContent = ' ';
     els.feedback.className = 'feedback';
   }
+
+  // 긴 문제가 카드 너비를 넘지 않도록 글자 크기를 줄여 맞춤
+  function fitEquation() {
+    var eq = els.equation;
+    eq.style.fontSize = '';
+    if (eq.hidden) return;
+    var card = eq.closest('.card');
+    var cs = getComputedStyle(card);
+    var available = card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var needed = eq.scrollWidth;
+    if (needed > available) {
+      var size = parseFloat(getComputedStyle(eq).fontSize);
+      eq.style.fontSize = Math.floor(size * available / needed) + 'px';
+    }
+  }
+
+  window.addEventListener('resize', fitEquation);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitEquation);
 
   function appendDigit(digit) {
     if (state.gameOver || state.answered || !state.current) return;
